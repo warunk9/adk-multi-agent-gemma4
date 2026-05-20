@@ -26,7 +26,15 @@ def _make_fake_adk():
     google_mod = types.ModuleType("google")
     google_mod.adk = adk_mod
 
-    return {"google": google_mod, "google.adk": adk_mod, "google.adk.agents": agents_mod}
+    dotenv_mod = types.ModuleType("dotenv")
+    dotenv_mod.load_dotenv = lambda *a, **kw: None
+
+    return {
+        "google": google_mod,
+        "google.adk": adk_mod,
+        "google.adk.agents": agents_mod,
+        "dotenv": dotenv_mod,
+    }
 
 
 _ALL_MODULE_PATHS = [

@@ -1,8 +1,11 @@
+from dotenv import load_dotenv
 from google.adk.agents import Agent
 from customer_support.config import GEMMA_MODEL
 from customer_support.sub_agents.billing_agent.agent import billing_agent
 from customer_support.sub_agents.tech_agent.agent import tech_agent
 from customer_support.sub_agents.general_agent.agent import general_agent
+
+load_dotenv()
 
 root_agent = Agent(
     name="triage_agent",
