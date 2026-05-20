@@ -1,0 +1,27 @@
+[project]
+name = "adk-multi-agent-gemma4"
+version = "0.1.0"
+description = "Multi-agent customer support POC using Gemma 4 and Google ADK"
+requires-python = ">=3.11"
+dependencies = [
+    "google-adk>=1.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.4.0",
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 100
