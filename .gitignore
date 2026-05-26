@@ -8,3 +8,15 @@ venv/
 dist/
 build/
 .DS_Store
+
+# Terraform runtimes & local caches (Excludes bloated binaries)
+**/.terraform/
+**/*.tfstate*
+**/.terraform.tfstate.lock.info
+
+# ADK local session runtimes
+**/.adk/
+**/session.db
+**/agent.*.log
+**/agent.latest.log
+

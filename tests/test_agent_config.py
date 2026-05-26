@@ -1,7 +1,5 @@
 """Tests for agent configuration — no API calls made."""
 
-import pytest
-
 
 class TestModel:
     def test_all_agents_use_gemma4(self, agents):
@@ -11,10 +9,10 @@ class TestModel:
             agents.general_agent,
             agents.root_agent,
         ]:
-            assert agent_obj.model == "gemma-4-27b-it"
+            assert agent_obj.model == "gemma-4-31b-it"
 
     def test_model_constant_matches_agents(self, agents):
-        assert agents.GEMMA_MODEL == "gemma-4-27b-it"
+        assert agents.GEMMA_MODEL == "gemma-4-31b-it"
 
 
 class TestAgentNames:
