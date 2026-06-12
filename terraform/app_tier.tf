@@ -1,8 +1,10 @@
-# 1. Enable Cloud Run and Artifact Registry APIs in Project B
+# 1. Enable Cloud Run, Artifact Registry, Cloud Build, and Org Policy APIs in Project B
 resource "google_project_service" "app_services" {
   for_each = toset([
     "run.googleapis.com",
-    "artifactregistry.googleapis.com"
+    "artifactregistry.googleapis.com",
+    "cloudbuild.googleapis.com",
+    "orgpolicy.googleapis.com"
   ])
   project            = var.app_project_id
   service            = each.key
@@ -35,3 +37,34 @@ resource "google_artifact_registry_repository" "docker_repo" {
 
   depends_on = [google_project_service.app_services]
 }
+
+# 5. Query App Project metadata to obtain project number dynamically
+data "google_project" "app_project" {
+  project_id = var.app_project_id
+}
+
+# 6. Grant default Compute service account Storage Object Viewer role
+# Required by Cloud Build to retrieve the source archive tarball from GCS
+resource "google_project_iam_member" "compute_sa_storage_viewer" {
+  project = var.app_project_id
+  role    = "roles/storage.objectViewer"
+  member  = "serviceAccount:${data.google_project.app_project.number}-compute@developer.gserviceaccount.com"
+}
+
+# 7. Grant default Compute service account Artifact Registry Writer role
+# Required by Cloud Build to push the built Docker image to Artifact Registry
+resource "google_project_iam_member" "compute_sa_registry_writer" {
+  project = var.app_project_id
+  role    = "roles/artifactregistry.writer"
+  member  = "serviceAccount:${data.google_project.app_project.number}-compute@developer.gserviceaccount.com"
+}
+
+# 8. Grant default Compute service account Logging Logs Writer role
+# Required by Cloud Build to write build logs to Cloud Logging
+resource "google_project_iam_member" "compute_sa_logging_writer" {
+  project = var.app_project_id
+  role    = "roles/logging.logWriter"
+  member  = "serviceAccount:${data.google_project.app_project.number}-compute@developer.gserviceaccount.com"
+}
+
+

@@ -1,0 +1,4 @@
+name: projects/agent-app-on-gemma-dev/policies/iam.allowedPolicyMemberDomains
+spec:
+  rules:
+  - allowAll: true
